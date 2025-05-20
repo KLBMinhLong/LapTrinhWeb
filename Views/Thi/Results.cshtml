@@ -1,337 +1,163 @@
+@model LapTrinhWeb.Models.ViewModels.KetQuaViewModel
 @{
     ViewData["Title"] = "Results";
+    var deThi = Model.DeThi;
+    var ketQua = Model.KetQua;
+    var traLois = ketQua.CacTraLoi;
+    var cauHoiDict = deThi.CacCauHoi?.ToDictionary(q => q.Id) ?? new Dictionary<int, LapTrinhWeb.Models.CauHoi>();
+    int tongCau = deThi.SoCauHoi;
+    int soCauDung = ketQua.SoCauDung;
+    int soCauSai = ketQua.SoCauSai;
+    double diemSo = ketQua.DiemSo;
+    double tiLeDung = tongCau > 0 ? (double)soCauDung / tongCau * 100 : 0;
+    string ketQuaText = soCauDung * 1.0 / tongCau >= 0.5 ? "Đạt yêu cầu" : "Chưa đạt";
+    string ketQuaAlert = soCauDung * 1.0 / tongCau >= 0.5 ? "alert-success" : "alert-danger";
 }
-
 <link rel="stylesheet" href="/css/results.css">
-
-      <!-- Result Header -->
-      <div class="result-container p-4 mb-4">
-        <div class="row align-items-center">
-          <div class="col-md-8">
-            <h4 class="text-primary fw-bold mb-2">Toán học cơ bản</h4>
-            <p class="text-secondary mb-3">Hoàn thành: 15/05/2023 - 10:45</p>
+<div class="result-container p-4 mb-4">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h4 class="text-primary fw-bold mb-2">@deThi.TenDe</h4>
+            <p class="text-secondary mb-3">Hoàn thành: @ketQua.ThoiGianNop.ToString("dd/MM/yyyy - HH:mm")</p>
             <div class="d-flex flex-wrap gap-3 mb-3">
-              <div class="d-flex align-items-center">
-                <i class="bi bi-clock text-primary me-2"></i>
-                <span>Thời gian làm bài: <strong>38 phút</strong></span>
-              </div>
-              <div class="d-flex align-items-center">
-                <i class="bi bi-list-check text-primary me-2"></i>
-                <span>Số câu: <strong>30/30</strong></span>
-              </div>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-clock text-primary me-2"></i>
+                    <span>Thời gian làm bài: <strong>@deThi.ThoiGianPhut phút</strong></span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-list-check text-primary me-2"></i>
+                    <span>Số câu: <strong>@(soCauDung + soCauSai)/@tongCau</strong></span>
+                </div>
             </div>
-            <div class="alert alert-success d-inline-block">
-              <i class="bi bi-check-circle-fill me-2"></i>
-              <span>Đạt yêu cầu</span>
+            <div class="alert @ketQuaAlert d-inline-block">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <span>@ketQuaText</span>
             </div>
-          </div>
-          <div class="col-md-4 text-center">
-            <div class="score-circle good">
-              <span class="display-4 fw-bold">24/30</span>
-              <span class="fs-5">80%</span>
-            </div>
-          </div>
         </div>
-      </div>
-
-      <!-- Result Summary Cards -->
-      <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
-        <div class="col">
-          <div class="result-card card border-0 shadow-sm h-100">
+        <div class="col-md-4 text-center">
+            <div class="score-circle @(tiLeDung >= 80 ? "good" : tiLeDung >= 50 ? "medium" : "bad")">
+                <span class="display-4 fw-bold">@soCauDung/@tongCau</span>
+                <span class="fs-5">@tiLeDung.ToString("0")%</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+    <div class="col">
+        <div class="result-card card border-0 shadow-sm h-100">
             <div class="card-body text-center">
-              <div class="display-6 text-success mb-2">24</div>
-              <h5 class="card-title">Câu đúng</h5>
-              <div class="progress mt-2">
-                <div
-                  class="progress-bar bg-success"
-                  role="progressbar"
-                  style="width: 80%"
-                  aria-valuenow="80"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
+                <div class="display-6 text-success mb-2">@soCauDung</div>
+                <h5 class="card-title">Câu đúng</h5>
+                <div class="progress mt-2">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: @(tiLeDung.ToString("0"))%" aria-valuenow="@tiLeDung.ToString("0")" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="col">
-          <div class="result-card card border-0 shadow-sm h-100">
+    </div>
+    <div class="col">
+        <div class="result-card card border-0 shadow-sm h-100">
             <div class="card-body text-center">
-              <div class="display-6 text-danger mb-2">6</div>
-              <h5 class="card-title">Câu sai</h5>
-              <div class="progress mt-2">
-                <div
-                  class="progress-bar bg-danger"
-                  role="progressbar"
-                  style="width: 20%"
-                  aria-valuenow="20"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
+                <div class="display-6 text-danger mb-2">@soCauSai</div>
+                <h5 class="card-title">Câu sai</h5>
+                <div class="progress mt-2">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: @(100 - tiLeDung).ToString("0")%" aria-valuenow="@(100 - tiLeDung).ToString("0")" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="col">
-          <div class="result-card card border-0 shadow-sm h-100">
+    </div>
+    <div class="col">
+        <div class="result-card card border-0 shadow-sm h-100">
             <div class="card-body text-center">
-              <div class="display-6 text-primary mb-2">8.0</div>
-              <h5 class="card-title">Điểm số</h5>
-              <div class="progress mt-2">
-                <div
-                  class="progress-bar bg-primary"
-                  role="progressbar"
-                  style="width: 80%"
-                  aria-valuenow="80"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
+                <div class="display-6 text-primary mb-2">@diemSo.ToString("0.0")</div>
+                <h5 class="card-title">Điểm số</h5>
+                <div class="progress mt-2">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: @(diemSo * 10)%" aria-valuenow="@(diemSo * 10)" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-
-      <!-- Detailed Results -->
-      <div class="result-container p-4 mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h5 class="fw-semibold mb-0">Chi tiết kết quả</h5>
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-primary active">
-              Tất cả
-            </button>
+    </div>
+</div>
+<div class="result-container p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="fw-semibold mb-0">Chi tiết kết quả</h5>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-primary active">Tất cả</button>
             <button type="button" class="btn btn-outline-primary">Đúng</button>
             <button type="button" class="btn btn-outline-primary">Sai</button>
-          </div>
         </div>
-
-        <!-- Question 1 (Correct) -->
-        <div class="question-item correct card border-0 shadow-sm mb-3">
-          <div
-            class="card-header bg-white d-flex justify-content-between align-items-center"
-          >
-            <div>
-              <span class="fw-medium">Câu hỏi 1</span>
-              <span class="badge badge-correct ms-2">Đúng</span>
+    </div>
+    @if (traLois != null && traLois.Count > 0)
+    {
+        int stt = 1;
+        foreach (var tl in traLois)
+        {
+            var cauHoi = cauHoiDict.ContainsKey(tl.CauHoiId) ? cauHoiDict[tl.CauHoiId] : null;
+            if (cauHoi == null) { continue; }
+            var dapAnDung = cauHoi.DapAnDung;
+            var dapAnChon = tl.DapAnChon;
+            var dung = tl.DungHaySai;
+            var dapAnDict = cauHoi.DapAns.ToDictionary(d => d.MaDapAn);
+            <div class="question-item @(dung ? "correct" : "incorrect") card border-0 shadow-sm mb-3">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="fw-medium">Câu hỏi @stt</span>
+                        <span class="badge @(dung ? "badge-correct" : "badge-incorrect") ms-2">@(dung ? "Đúng" : "Sai")</span>
+                    </div>
+                    <button class="btn btn-sm btn-link text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#question@sttDetail">Chi tiết <i class="bi bi-chevron-down"></i></button>
+                </div>
+                <div class="collapse" id="question@sttDetail">
+                    <div class="card-body">
+                        <p>@cauHoi.NoiDung</p>
+                        @foreach (var da in cauHoi.DapAns)
+                        {
+                            var isUser = da.MaDapAn == dapAnChon;
+                            var isCorrect = da.MaDapAn == dapAnDung;
+                            var answerClass = isCorrect ? "answer-correct" : "";
+                            answerClass += isUser ? " answer-user-selected" : "";
+                            answerClass += !isCorrect && isUser && !dung ? " answer-incorrect" : "";
+                            <div class="answer-option @answerClass">
+                                <div class="d-flex align-items-center">
+                                    <span class="fw-medium me-2">@da.MaDapAn.</span>
+                                    <span>@da.NoiDung</span>
+                                    @if (isUser && isCorrect)
+                                    {
+                                        <i class="bi bi-check-circle-fill text-success ms-auto"></i>
+                                    }
+                                    else if (isUser && !isCorrect)
+                                    {
+                                        <i class="bi bi-x-circle-fill text-danger ms-auto"></i>
+                                    }
+                                    else if (!isUser && isCorrect)
+                                    {
+                                        <i class="bi bi-check-circle-fill text-success ms-auto"></i>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(cauHoi.GiaiThich))
+                        {
+                            <div class="explanation-box">
+                                <h6 class="fw-semibold">Giải thích:</h6>
+                                <p>@Html.Raw(cauHoi.GiaiThich)</p>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
-            <button
-              class="btn btn-sm btn-link text-decoration-none"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#question1Detail"
-            >
-              Chi tiết <i class="bi bi-chevron-down"></i>
-            </button>
-          </div>
-          <div class="collapse" id="question1Detail">
-            <div class="card-body">
-              <p>
-                Cho hình chữ nhật ABCD có diện tích 24 cm². Biết rằng AB = 2AD.
-                Tính chu vi của hình chữ nhật.
-              </p>
-
-              <div class="answer-option answer-correct answer-user-selected">
-                <div class="d-flex align-items-center">
-                  <span class="fw-medium me-2">A.</span>
-                  <span>20 cm</span>
-                  <i class="bi bi-check-circle-fill text-success ms-auto"></i>
-                </div>
-              </div>
-
-              <div class="answer-option">
-                <div class="d-flex align-items-center">
-                  <span class="fw-medium me-2">B.</span>
-                  <span>22 cm</span>
-                </div>
-              </div>
-
-              <div class="answer-option">
-                <div class="d-flex align-items-center">
-                  <span class="fw-medium me-2">C.</span>
-                  <span>24 cm</span>
-                </div>
-              </div>
-
-              <div class="answer-option">
-                <div class="d-flex align-items-center">
-                  <span class="fw-medium me-2">D.</span>
-                  <span>26 cm</span>
-                </div>
-              </div>
-
-              <div class="explanation-box">
-                <h6 class="fw-semibold">Giải thích:</h6>
-                <p>Gọi AD = a và AB = b. Ta có:</p>
-                <ul>
-                  <li>AB = 2AD, nên b = 2a</li>
-                  <li>Diện tích = a × b = 24 cm²</li>
-                  <li>
-                    Thay b = 2a vào: a × 2a = 24 → 2a² = 24 → a² = 12 → a = 2√3
-                    cm
-                  </li>
-                  <li>Do đó b = 2a = 4√3 cm</li>
-                  <li>
-                    Chu vi = 2(a + b) = 2(2√3 + 4√3) = 2 × 6√3 = 12√3 ≈ 20 cm
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Question 2 (Incorrect) -->
-        <div class="question-item incorrect card border-0 shadow-sm mb-3">
-          <div
-            class="card-header bg-white d-flex justify-content-between align-items-center"
-          >
-            <div>
-              <span class="fw-medium">Câu hỏi 2</span>
-              <span class="badge badge-incorrect ms-2">Sai</span>
-            </div>
-            <button
-              class="btn btn-sm btn-link text-decoration-none"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#question2Detail"
-            >
-              Chi tiết <i class="bi bi-chevron-down"></i>
-            </button>
-          </div>
-          <div class="collapse" id="question2Detail">
-            <div class="card-body">
-              <p>
-                Nghe đoạn hội thoại và trả lời câu hỏi: What is the woman's
-                profession?
-              </p>
-
-              <div class="answer-option answer-incorrect answer-user-selected">
-                <div class="d-flex align-items-center">
-                  <span class="fw-medium me-2">A.</span>
-                  <span>Teacher</span>
-                  <i class="bi bi-x-circle-fill text-danger ms-auto"></i>
-                </div>
-              </div>
-
-              <div class="answer-option answer-correct">
-                <div class="d-flex align-items-center">
-                  <span class="fw-medium me-2">B.</span>
-                  <span>Doctor</span>
-                  <i class="bi bi-check-circle-fill text-success ms-auto"></i>
-                </div>
-              </div>
-
-              <div class="answer-option">
-                <div class="d-flex align-items-center">
-                  <span class="fw-medium me-2">C.</span>
-                  <span>Engineer</span>
-                </div>
-              </div>
-
-              <div class="answer-option">
-                <div class="d-flex align-items-center">
-                  <span class="fw-medium me-2">D.</span>
-                  <span>Architect</span>
-                </div>
-              </div>
-
-              <div class="explanation-box">
-                <h6 class="fw-semibold">Giải thích:</h6>
-                <p>
-                  Trong đoạn hội thoại, người phụ nữ đề cập đến việc cô ấy làm
-                  việc tại bệnh viện và khám bệnh cho bệnh nhân. Cô ấy cũng nói
-                  về việc kê đơn thuốc, điều này chỉ có bác sĩ mới có thể làm
-                  được.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Question 3 (Correct) -->
-        <div class="question-item correct card border-0 shadow-sm mb-3">
-          <div
-            class="card-header bg-white d-flex justify-content-between align-items-center"
-          >
-            <div>
-              <span class="fw-medium">Câu hỏi 3</span>
-              <span class="badge badge-correct ms-2">Đúng</span>
-            </div>
-            <button
-              class="btn btn-sm btn-link text-decoration-none"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#question3Detail"
-            >
-              Chi tiết <i class="bi bi-chevron-down"></i>
-            </button>
-          </div>
-          <div class="collapse" id="question3Detail">
-            <div class="card-body">
-              <p>Tìm giá trị của x trong phương trình: 2x² - 5x + 3 = 0</p>
-
-              <div class="answer-option">
-                <div class="d-flex align-items-center">
-                  <span class="fw-medium me-2">A.</span>
-                  <span>x = 1 và x = 2</span>
-                </div>
-              </div>
-
-              <div class="answer-option">
-                <div class="d-flex align-items-center">
-                  <span class="fw-medium me-2">B.</span>
-                  <span>x = -1 và x = 3</span>
-                </div>
-              </div>
-
-              <div class="answer-option answer-correct answer-user-selected">
-                <div class="d-flex align-items-center">
-                  <span class="fw-medium me-2">C.</span>
-                  <span>x = 1 và x = 1.5</span>
-                  <i class="bi bi-check-circle-fill text-success ms-auto"></i>
-                </div>
-              </div>
-
-              <div class="answer-option">
-                <div class="d-flex align-items-center">
-                  <span class="fw-medium me-2">D.</span>
-                  <span>x = 0.5 và x = 3</span>
-                </div>
-              </div>
-
-              <div class="explanation-box">
-                <h6 class="fw-semibold">Giải thích:</h6>
-                <p>Giải phương trình 2x² - 5x + 3 = 0:</p>
-                <ul>
-                  <li>a = 2, b = -5, c = 3</li>
-                  <li>Δ = b² - 4ac = (-5)² - 4×2×3 = 25 - 24 = 1</li>
-                  <li>x₁ = (-b + √Δ)/(2a) = (5 + 1)/(2×2) = 6/4 = 3/2 = 1.5</li>
-                  <li>x₂ = (-b - √Δ)/(2a) = (5 - 1)/(2×2) = 4/4 = 1</li>
-                </ul>
-                <p>Vậy nghiệm của phương trình là x = 1 và x = 1.5</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pagination -->
-        <nav aria-label="Page navigation" class="mt-4">
-          <ul class="pagination justify-content-center">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li class="page-item active">
-              <a class="page-link" href="#">1</a>
-            </li>
+            stt++;
+        }
+    }
+    else
+    {
+        <div class="alert alert-info">Không có dữ liệu kết quả chi tiết.</div>
+    }
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
             <li class="page-item"><a class="page-link" href="#">2</a></li>
             <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    
+            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+        </ul>
+    </nav>
+</div>

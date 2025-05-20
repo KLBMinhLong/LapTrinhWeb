@@ -1,10 +1,10 @@
+@model LapTrinhWeb.Models.ViewModels.LamBaiViewModel
 @{
     ViewData["Title"] = "Exam Page";
+    var cauHoi = Model.DeThi.CacCauHoi[Model.ChiSoCauHoiHienTai - 1];
 }
-
 <link rel="stylesheet" href="/css/exam-page.css">
 <script src="/js/exam-page.js"></script>
-
 
 <!-- Main Content -->
 <main class="container py-4">
@@ -13,9 +13,9 @@
         <div class="col-12 mb-4">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <h4 class="card-title text-primary mb-0">Toán học cơ bản</h4>
+                    <h4 class="card-title text-primary mb-0">@Model.DeThi.TenDe</h4>
                     <p class="text-secondary mb-0">
-                        Thời gian: 45 phút • Số câu hỏi: 30
+                        Thời gian: @Model.DeThi.ThoiGianPhut phút • Số câu hỏi: @Model.DeThi.SoCauHoi
                     </p>
                 </div>
             </div>
@@ -26,36 +26,11 @@
             <div class="question-navigation card border-0 shadow-sm p-3 mb-4">
                 <h5 class="fw-semibold mb-3">Danh sách câu hỏi</h5>
                 <div class="d-flex flex-wrap gap-2">
-                    <div class="question-number active">1</div>
-                    <div class="question-number answered">2</div>
-                    <div class="question-number answered">3</div>
-                    <div class="question-number">4</div>
-                    <div class="question-number">5</div>
-                    <div class="question-number">6</div>
-                    <div class="question-number">7</div>
-                    <div class="question-number">8</div>
-                    <div class="question-number">9</div>
-                    <div class="question-number">10</div>
-                    <div class="question-number">11</div>
-                    <div class="question-number">12</div>
-                    <div class="question-number">13</div>
-                    <div class="question-number">14</div>
-                    <div class="question-number">15</div>
-                    <div class="question-number">16</div>
-                    <div class="question-number">17</div>
-                    <div class="question-number">18</div>
-                    <div class="question-number">19</div>
-                    <div class="question-number">20</div>
-                    <div class="question-number">21</div>
-                    <div class="question-number">22</div>
-                    <div class="question-number">23</div>
-                    <div class="question-number">24</div>
-                    <div class="question-number">25</div>
-                    <div class="question-number">26</div>
-                    <div class="question-number">27</div>
-                    <div class="question-number">28</div>
-                    <div class="question-number">29</div>
-                    <div class="question-number">30</div>
+                    @for (int i = 1; i <= Model.DeThi.CacCauHoi.Count; i++)
+                    {
+                        var active = i == Model.ChiSoCauHoiHienTai ? "active" : "";
+                        <a href="@Url.Action("Exam", "Thi", new { cauHienTai = i })" class="question-number @active">@i</a>
+                    }
                 </div>
 
                 <div class="mt-4">
@@ -92,70 +67,46 @@
         <div class="col-lg-9">
             <div class="question-container p-4 mb-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-semibold mb-0">Câu hỏi 1</h5>
-                    <span class="badge bg-light text-secondary border">1/30</span>
+                    <h5 class="fw-semibold mb-0">Câu hỏi @Model.ChiSoCauHoiHienTai</h5>
+                    <span class="badge bg-light text-secondary border">@Model.ChiSoCauHoiHienTai/@Model.DeThi.SoCauHoi</span>
                 </div>
 
                 <!-- Question with Image -->
                 <div class="mb-4">
                     <p class="mb-3">
-                        Cho hình chữ nhật ABCD có diện tích 24 cm². Biết rằng AB = 2AD.
-                        Tính chu vi của hình chữ nhật.
+                        @cauHoi.NoiDung
                     </p>
-                    <div class="text-center mb-3">
-                        <img src="/images/toan_img.png" alt="Hình minh họa"
-                            class="img-fluid border rounded" style="max-height: 200px" />
-                    </div>
+                    @if (!string.IsNullOrEmpty(cauHoi.HinhAnh))
+                    {
+                        <div class="text-center mb-3">
+                            <img src="@cauHoi.HinhAnh" alt="Hình minh họa" class="img-fluid border rounded" style="max-height: 200px" />
+                        </div>
+                    }
                 </div>
 
                 <!-- Answer Options -->
                 <div class="mb-4">
-                    <div class="form-check custom-option mb-0">
-                        <input class="form-check-input visually-hidden" type="radio" name="question1" id="option1"
-                            value="A" />
-                        <label class="option-label" for="option1">
-                            <span class="option-prefix">A</span>
-                            <span>20 cm</span>
-                        </label>
-                    </div>
-
-                    <div class="form-check custom-option mb-0">
-                        <input class="form-check-input visually-hidden" type="radio" name="question1" id="option2"
-                            value="B" />
-                        <label class="option-label" for="option2">
-                            <span class="option-prefix">B</span>
-                            <span>22 cm</span>
-                        </label>
-                    </div>
-
-                    <div class="form-check custom-option mb-0">
-                        <input class="form-check-input visually-hidden" type="radio" name="question1" id="option3"
-                            value="C" />
-                        <label class="option-label" for="option3">
-                            <span class="option-prefix">C</span>
-                            <span>24 cm</span>
-                        </label>
-                    </div>
-
-                    <div class="form-check custom-option mb-0">
-                        <input class="form-check-input visually-hidden" type="radio" name="question1" id="option4"
-                            value="D" />
-                        <label class="option-label" for="option4">
-                            <span class="option-prefix">D</span>
-                            <span>26 cm</span>
-                        </label>
-                    </div>
+                    @foreach (var da in cauHoi.DapAns)
+                    {
+                        <div class="form-check custom-option mb-0">
+                            <input class="form-check-input visually-hidden" type="radio" name="question@cauHoi.Id" id="option@da.MaDapAn" value="@da.MaDapAn" />
+                            <label class="option-label" for="option@da.MaDapAn">
+                                <span class="option-prefix">@da.MaDapAn</span>
+                                <span>@da.NoiDung</span>
+                            </label>
+                        </div>
+                    }
                 </div>
             </div>
 
             <!-- Question Navigation Buttons -->
             <div class="d-flex justify-content-between mb-5">
-                <button class="btn btn-outline-secondary px-4">
+                <a class="btn btn-outline-secondary px-4 @(Model.ChiSoCauHoiHienTai == 1 ? "disabled" : "")" href="@Url.Action("Exam", "Thi", new { cauHienTai = Model.ChiSoCauHoiHienTai - 1 })">
                     <i class="bi bi-arrow-left me-2"></i>Câu trước
-                </button>
-                <button class="btn btn-outline-secondary px-4">
+                </a>
+                <a class="btn btn-outline-secondary px-4 @(Model.ChiSoCauHoiHienTai == Model.DeThi.CacCauHoi.Count ? "disabled" : "")" href="@Url.Action("Exam", "Thi", new { cauHienTai = Model.ChiSoCauHoiHienTai + 1 })">
                     Câu tiếp theo<i class="bi bi-arrow-right ms-2"></i>
-                </button>
+                </a>
             </div>
         </div>
     </div>
