@@ -23,12 +23,7 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Exam()
-    {
-        return View();
-    }
-
-    public IActionResult Results()
+    public IActionResult QuizDetail()
     {
         return View();
     }

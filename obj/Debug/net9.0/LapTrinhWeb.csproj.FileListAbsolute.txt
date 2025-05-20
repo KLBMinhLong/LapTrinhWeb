@@ -94,3 +94,4 @@ D:\Downloads\LapTrinhWeb\obj\Debug\net9.0\compressed\7mbi9xwedq-ge7w4qbwwh.gz
 D:\Downloads\LapTrinhWeb\obj\Debug\net9.0\compressed\zgsor9fksz-kz4hfllmtx.gz
 D:\Downloads\LapTrinhWeb\obj\Debug\net9.0\compressed\bfegs47fhu-sv4w2nit1z.gz
 D:\Downloads\LapTrinhWeb\obj\Debug\net9.0\compressed\kfn1wi9p51-qdo6dn9jqu.gz
+D:\Downloads\LapTrinhWeb\obj\Debug\net9.0\LapTrinhWeb.sourcelink.json
