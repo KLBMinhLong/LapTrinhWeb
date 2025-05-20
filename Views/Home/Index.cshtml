@@ -1,0 +1,214 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- Hero Section -->
+<section class="hero-section mb-5 p-4 p-md-5 text-white">
+    <div class="hero-pattern"></div>
+    <div class="hero-content row">
+        <div class="col-md-8 col-lg-6">
+            <h2 class="display-6 fw-bold mb-3">Chào mừng đến với Smart Test</h2>
+            <p class="mb-4 opacity-75">
+                Nền tảng thi trắc nghiệm trực tuyến giúp bạn kiểm tra kiến thức và
+                cải thiện kỹ năng học tập một cách hiệu quả.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Search and Filter -->
+<section class="mb-4">
+    <div class="row g-3">
+        <div class="col-md-8">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                    <i class="bi bi-search text-secondary"></i>
+                </span>
+                <input type="text" class="form-control border-start-0" placeholder="Tìm kiếm đề thi..." />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select">
+                <option selected>Chọn chủ đề</option>
+                <option value="all">Tất cả</option>
+                <option value="math">Toán học</option>
+                <option value="english">Tiếng Anh</option>
+                <option value="physics">Vật lý</option>
+                <option value="chemistry">Hóa học</option>
+                <option value="biology">Sinh học</option>
+                <option value="history">Lịch sử</option>
+                <option value="geography">Địa lý</option>
+            </select>
+        </div>
+    </div>
+</section>
+
+<!-- Quiz List -->
+<section class="mb-5">
+    <h3 class="fw-semibold text-dark mb-4">Danh sách đề thi</h3>
+
+    <div class="row row-cols-1 g-4">
+        <!-- Quiz 1 -->
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-header bg-white border-bottom-0 pb-0">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h5 class="card-title text-primary">Toán học cơ bản</h5>
+                        <span class="badge category-badge">Toán học</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-secondary mb-3">
+                        Bài kiểm tra kiến thức toán học cơ bản dành cho học sinh THPT
+                    </p>
+                    <div class="row row-cols-2 g-2 text-secondary small mb-3">
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-clock text-primary me-2"></i>
+                            <span>45 phút</span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-list-check text-primary me-2"></i>
+                            <span>30 câu hỏi</span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-bar-chart text-primary me-2"></i>
+                            <span>Độ khó: Trung bình</span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-calendar-date text-primary me-2"></i>
+                            <span>2023-05-15</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top-0"></div>
+            </div>
+        </div>
+
+        <!-- Quiz 2 -->
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-header bg-white border-bottom-0 pb-0">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h5 class="card-title text-primary">Ngữ pháp tiếng Anh</h5>
+                        <span class="badge category-badge">Tiếng Anh</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-secondary mb-3">
+                        Kiểm tra ngữ pháp và từ vựng tiếng Anh cơ bản
+                    </p>
+                    <div class="row row-cols-2 g-2 text-secondary small mb-3">
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-clock text-primary me-2"></i>
+                            <span>30 phút</span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-list-check text-primary me-2"></i>
+                            <span>25 câu hỏi</span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-bar-chart text-primary me-2"></i>
+                            <span>Độ khó: Dễ</span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-calendar-date text-primary me-2"></i>
+                            <span>2023-06-20</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top-0"></div>
+            </div>
+        </div>
+
+        <!-- Quiz 3 -->
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-header bg-white border-bottom-0 pb-0">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h5 class="card-title text-primary">Vật lý đại cương</h5>
+                        <span class="badge category-badge">Vật lý</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-secondary mb-3">
+                        Bài kiểm tra kiến thức vật lý đại cương cho học sinh lớp 12
+                    </p>
+                    <div class="row row-cols-2 g-2 text-secondary small mb-3">
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-clock text-primary me-2"></i>
+                            <span>60 phút</span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-list-check text-primary me-2"></i>
+                            <span>40 câu hỏi</span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-bar-chart text-primary me-2"></i>
+                            <span>Độ khó: Khó</span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-calendar-date text-primary me-2"></i>
+                            <span>2023-07-10</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top-0"></div>
+            </div>
+        </div>
+
+        <!-- Quiz 4 -->
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-header bg-white border-bottom-0 pb-0">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h5 class="card-title text-primary">Hóa học hữu cơ</h5>
+                        <span class="badge category-badge">Hóa học</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-secondary mb-3">
+                        Bài kiểm tra về hóa học hữu cơ và các phản ứng cơ bản
+                    </p>
+                    <div class="row row-cols-2 g-2 text-secondary small mb-3">
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-clock text-primary me-2"></i>
+                            <span>50 phút</span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-list-check text-primary me-2"></i>
+                            <span>35 câu hỏi</span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-bar-chart text-primary me-2"></i>
+                            <span>Độ khó: Trung bình</span>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <i class="bi bi-calendar-date text-primary me-2"></i>
+                            <span>2023-08-05</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top-0"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pagination -->
+<nav aria-label="Page navigation" class="my-5">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

@@ -1,0 +1,275 @@
+@{
+    ViewData["Title"] = "Exam Page";
+}
+
+<link rel="stylesheet" href="/css/exam-page.css">
+<script src="/js/exam-page.js"></script>
+
+
+<!-- Main Content -->
+<main class="container py-4">
+    <div class="row">
+        <!-- Exam Info -->
+        <div class="col-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-primary mb-0">Toán học cơ bản</h4>
+                    <p class="text-secondary mb-0">
+                        Thời gian: 45 phút • Số câu hỏi: 30
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Navigation (Sidebar) -->
+        <div class="col-lg-3">
+            <div class="question-navigation card border-0 shadow-sm p-3 mb-4">
+                <h5 class="fw-semibold mb-3">Danh sách câu hỏi</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    <div class="question-number active">1</div>
+                    <div class="question-number answered">2</div>
+                    <div class="question-number answered">3</div>
+                    <div class="question-number">4</div>
+                    <div class="question-number">5</div>
+                    <div class="question-number">6</div>
+                    <div class="question-number">7</div>
+                    <div class="question-number">8</div>
+                    <div class="question-number">9</div>
+                    <div class="question-number">10</div>
+                    <div class="question-number">11</div>
+                    <div class="question-number">12</div>
+                    <div class="question-number">13</div>
+                    <div class="question-number">14</div>
+                    <div class="question-number">15</div>
+                    <div class="question-number">16</div>
+                    <div class="question-number">17</div>
+                    <div class="question-number">18</div>
+                    <div class="question-number">19</div>
+                    <div class="question-number">20</div>
+                    <div class="question-number">21</div>
+                    <div class="question-number">22</div>
+                    <div class="question-number">23</div>
+                    <div class="question-number">24</div>
+                    <div class="question-number">25</div>
+                    <div class="question-number">26</div>
+                    <div class="question-number">27</div>
+                    <div class="question-number">28</div>
+                    <div class="question-number">29</div>
+                    <div class="question-number">30</div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="question-number active me-2" style="width: 20px; height: 20px; font-size: 0.75rem">
+                        </div>
+                        <span class="small">Câu hỏi hiện tại</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="question-number answered me-2"
+                            style="width: 20px; height: 20px; font-size: 0.75rem"></div>
+                        <span class="small">Đã trả lời</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="question-number me-2" style="width: 20px; height: 20px; font-size: 0.75rem"></div>
+                        <span class="small">Chưa trả lời</span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="progress" style="height: 8px">
+                        <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <span class="small text-secondary">Đã làm: 3/30</span>
+                        <span class="small text-secondary">10%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Content -->
+        <div class="col-lg-9">
+            <div class="question-container p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-semibold mb-0">Câu hỏi 1</h5>
+                    <span class="badge bg-light text-secondary border">1/30</span>
+                </div>
+
+                <!-- Question with Image -->
+                <div class="mb-4">
+                    <p class="mb-3">
+                        Cho hình chữ nhật ABCD có diện tích 24 cm². Biết rằng AB = 2AD.
+                        Tính chu vi của hình chữ nhật.
+                    </p>
+                    <div class="text-center mb-3">
+                        <img src="/images/toan_img.png" alt="Hình minh họa"
+                            class="img-fluid border rounded" style="max-height: 200px" />
+                    </div>
+                </div>
+
+                <!-- Answer Options -->
+                <div class="mb-4">
+                    <div class="form-check custom-option mb-0">
+                        <input class="form-check-input visually-hidden" type="radio" name="question1" id="option1"
+                            value="A" />
+                        <label class="option-label" for="option1">
+                            <span class="option-prefix">A</span>
+                            <span>20 cm</span>
+                        </label>
+                    </div>
+
+                    <div class="form-check custom-option mb-0">
+                        <input class="form-check-input visually-hidden" type="radio" name="question1" id="option2"
+                            value="B" />
+                        <label class="option-label" for="option2">
+                            <span class="option-prefix">B</span>
+                            <span>22 cm</span>
+                        </label>
+                    </div>
+
+                    <div class="form-check custom-option mb-0">
+                        <input class="form-check-input visually-hidden" type="radio" name="question1" id="option3"
+                            value="C" />
+                        <label class="option-label" for="option3">
+                            <span class="option-prefix">C</span>
+                            <span>24 cm</span>
+                        </label>
+                    </div>
+
+                    <div class="form-check custom-option mb-0">
+                        <input class="form-check-input visually-hidden" type="radio" name="question1" id="option4"
+                            value="D" />
+                        <label class="option-label" for="option4">
+                            <span class="option-prefix">D</span>
+                            <span>26 cm</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Navigation Buttons -->
+            <div class="d-flex justify-content-between mb-5">
+                <button class="btn btn-outline-secondary px-4">
+                    <i class="bi bi-arrow-left me-2"></i>Câu trước
+                </button>
+                <button class="btn btn-outline-secondary px-4">
+                    Câu tiếp theo<i class="bi bi-arrow-right ms-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Submit Container -->
+<div class="submit-container">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <span class="text-secondary">Đã làm: <strong>3/30</strong> câu</span>
+            </div>
+            <div>
+                <button class="btn btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                    Xem lại bài làm
+                </button>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submitModal">
+                    Nộp bài
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Submit Confirmation Modal -->
+<div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="submitModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="submitModalLabel">Xác nhận nộp bài</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <span>Bạn chỉ mới làm <strong>3/30</strong> câu hỏi. Bạn có chắc chắn
+                        muốn nộp bài?</span>
+                </div>
+                <p>
+                    Sau khi nộp bài, bạn sẽ không thể quay lại để sửa đổi câu trả lời.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Tiếp tục làm bài
+                </button>
+                <button type="button" class="btn btn-primary">
+                    Xác nhận nộp bài
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Review Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">Xem lại bài làm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Câu hỏi</th>
+                                <th>Trạng thái</th>
+                                <th>Đáp án đã chọn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="#" class="text-decoration-none">Câu 1</a></td>
+                                <td>
+                                    <span class="badge bg-warning text-dark">Chưa trả lời</span>
+                                </td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="text-decoration-none">Câu 2</a></td>
+                                <td><span class="badge bg-success">Đã trả lời</span></td>
+                                <td>A</td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="text-decoration-none">Câu 3</a></td>
+                                <td><span class="badge bg-success">Đã trả lời</span></td>
+                                <td>C</td>
+                            </tr>
+                            <!-- Repeat for all questions -->
+                            <tr>
+                                <td><a href="#" class="text-decoration-none">Câu 4</a></td>
+                                <td>
+                                    <span class="badge bg-warning text-dark">Chưa trả lời</span>
+                                </td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="text-decoration-none">Câu 5</a></td>
+                                <td>
+                                    <span class="badge bg-warning text-dark">Chưa trả lời</span>
+                                </td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
