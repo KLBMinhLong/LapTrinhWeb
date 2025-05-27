@@ -1,4 +1,4 @@
-namespace LapTrinhWeb.Models;
+namespace ThiTracNghiem.Models;
 
 public class ErrorViewModel
 {

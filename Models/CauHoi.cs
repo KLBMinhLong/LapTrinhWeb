@@ -1,15 +1,36 @@
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LapTrinhWeb.Models
+public class CauHoi
 {
-    public class CauHoi
-    {
-        public int Id { get; set; }
-        public int DeThiId { get; set; }
-        public string NoiDung { get; set; } // Nội dung câu hỏi
-        public string? HinhAnh { get; set; } // Đường dẫn ảnh minh họa (nếu có)
-        public List<DapAn> DapAns { get; set; }
-        public string DapAnDung { get; set; } // "A", "B", "C", "D"
-        public string? GiaiThich { get; set; } // Giải thích đáp án
-    }
+    public int Id { get; set; }
+
+    [Required(ErrorMessage = "Nội dung câu hỏi không được để trống")]
+    public string NoiDung { get; set; } = "";
+
+    public string? HinhAnhUrl { get; set; } = null!;    // đường dẫn ảnh minh họa
+    public string? AudioUrl { get; set; } = null!;    // đường dẫn file âm thanh
+
+    [Required]
+    public string DapAnA { get; set; } = "";
+
+    [Required]
+    public string DapAnB { get; set; } = "";
+
+    [Required]
+    public string DapAnC { get; set; } = "";
+
+    [Required]
+    public string DapAnD { get; set; } = "";
+
+    [Required]
+    [RegularExpression("^[ABCD]$", ErrorMessage = "Chỉ được chọn A, B, C hoặc D")]
+    public string DapAnDung { get; set; } = "";
+
+    // Khóa ngoại
+    [Required(ErrorMessage = "Phải chọn chủ đề")]
+    public int ChuDeId { get; set; }
+
+    [ForeignKey("ChuDeId")]
+    public ChuDe? ChuDe { get; set; }
 }

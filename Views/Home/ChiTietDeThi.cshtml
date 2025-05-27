@@ -1,0 +1,121 @@
+@model DeThi
+@{
+    ViewData["Title"] = Model.TenDeThi;
+    var danhSachLichSu = ViewBag.LichSuDangLam as List<ThiTracNghiem.Models.LichSuLamBai>;
+    var dangLam = danhSachLichSu?.FirstOrDefault(l => l.DeThiId == Model.Id);
+}
+
+<link rel="stylesheet" href="~/css/chitietthi.css" />
+
+<div class="container exam-detail-container">
+    <h2 class="exam-title">@Model.TenDeThi</h2>
+
+    <div class="exam-info">
+        <div class="info-item">
+            <div class="info-label">
+                <i class="bi bi-question-circle me-2"></i>Số câu hỏi:
+            </div>
+            <div class="info-value">@Model.SoLuongCauHoi câu</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">
+                <i class="bi bi-clock me-2"></i>Thời gian làm bài:
+            </div>
+            <div class="info-value">@Model.ThoiGianLamBai phút</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">
+                <i class="bi bi-calendar-date me-2"></i>Ngày tạo:
+            </div>
+            <div class="info-value">@Model.NgayTao.ToString("dd/MM/yyyy")</div>
+        </div>
+    </div>
+
+    <div class="action-container">
+        @if (dangLam != null)
+        {
+            <div class="ongoing-alert">
+                <i class="bi bi-hourglass-split"></i>
+                <div>
+                    Bạn đang làm dở đề này từ @dangLam.NgayBatDau.ToString("HH:mm dd/MM/yyyy")
+                </div>
+            </div>
+            <a href="/Thi/LamBai?id=@Model.Id" class="btn btn-continue">
+                Tiếp tục làm bài
+            </a>
+        }
+        else
+        {
+            <a href="/Thi/LamBai?id=@Model.Id" class="btn btn-primary">
+                Bắt đầu làm bài
+            </a>
+        }    </div>
+    
+    @*
+    <div class="comment-section">
+        <h4 class="comment-header">
+            <i class="bi bi-chat-dots me-2"></i>Bình luận
+        </h4>
+        <div class="comment-form">
+            <form id="form-binhluan">
+                <input type="hidden" name="deThiId" value="@Model.Id" />
+                <textarea name="noiDung" class="form-control mb-3" 
+                          placeholder="Viết bình luận của bạn về đề thi này..." required></textarea>
+                <div class="text-end">
+                    <button type="submit" class="btn-comment">
+                        <i class="bi bi-send me-1"></i>Gửi bình luận
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="ds-binhluan" class="comments-list"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const deThiId = @Model.Id;
+
+        function taiBinhLuan() {
+            fetch('/BinhLuan/DanhSach?deThiId=' + deThiId)
+                .then(res => res.text())
+                .then(html => document.getElementById('ds-binhluan').innerHTML = html);
+        }
+
+        // Gửi bình luận
+        document.getElementById("form-binhluan").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch('/BinhLuan/Create', {
+                method: 'POST',
+                body: formData
+            })
+                .then(res => res.text())
+                .then(html => {
+                    this.reset();
+                    document.getElementById('ds-binhluan').innerHTML = html;
+                });
+        });
+
+        function xoaBinhLuan(id) {
+            if (!confirm("Bạn có chắc chắn muốn xóa bình luận này?")) return;
+
+            fetch('/BinhLuan/Delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'id=' + id
+            })
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('ds-binhluan').innerHTML = html;
+                });
+        }
+
+        // Tải lại mỗi 10 giây
+        setInterval(taiBinhLuan, 10000);
+        taiBinhLuan(); // load lần đầu
+    </script>
+}
+*@
+

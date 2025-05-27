@@ -1,8 +1,9 @@
-﻿@model List<LapTrinhWeb.Models.DeThi>
+﻿@model IEnumerable<DeThi>
+
 @{
     ViewData["Title"] = "Home Page";
+    var danhSachLichSu = ViewBag.LichSuDangLam as List<ThiTracNghiem.Models.LichSuLamBai>;
 }
-
 <!-- Hero Section -->
 <section class="hero-section mb-5 p-4 p-md-5 text-white">
     <div class="hero-pattern"></div>
@@ -17,94 +18,94 @@
     </div>
 </section>
 
-<!-- Search and Filter -->
-<section class="mb-4">
-    <div class="row g-3">
-        <div class="col-md-8">
-            <div class="input-group">
-                <span class="input-group-text bg-white border-end-0">
-                    <i class="bi bi-search text-secondary"></i>
-                </span>
-                <input type="text" class="form-control border-start-0" placeholder="Tìm kiếm đề thi..." />
-            </div>
-        </div>
-        <div class="col-md-4">
-            <select class="form-select">
-                <option selected>Chọn chủ đề</option>
-                <option value="all">Tất cả</option>
-                <option value="math">Toán học</option>
-                <option value="english">Tiếng Anh</option>
-                <option value="physics">Vật lý</option>
-                <option value="chemistry">Hóa học</option>
-                <option value="biology">Sinh học</option>
-                <option value="history">Lịch sử</option>
-                <option value="geography">Địa lý</option>
-            </select>
-        </div>
-    </div>
-</section>
 
-<!-- Quiz List -->
-<section class="mb-5">
-    <h3 class="fw-semibold text-dark mb-4">Danh sách đề thi</h3>
-    <div class="row row-cols-1 g-4">
-        @foreach (var de in Model)
-        {
-            <div class="col">
-                <div class="card h-100">
-                    <div class="card-header bg-white border-bottom-0 pb-0">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <h5 class="card-title text-primary">@de.TenDe</h5>
-                            <span class="badge category-badge">@de.ChuDe?.TenChuDe</span>
+<form asp-action="Index" method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-md-6">
+        <input type="text" name="searchString" class="form-control" placeholder="Tìm kiếm theo tên đề thi..." value="@ViewBag.CurrentFilter" />
+    </div>
+    <div class="col-md-4">
+        <select name="chuDeId" class="form-select">
+            <option value="">-- Tất cả chủ đề --</option>
+            @foreach (var chuDe in ViewBag.ChuDes)
+            {
+                <option value="@chuDe.Id" selected="@(ViewBag.CurrentChuDeId?.ToString() == chuDe.Id.ToString())">@chuDe.TenChuDe</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Lọc</button>
+    </div>
+</form>
+
+<h2>Danh sách đề thi</h2>
+
+@foreach (var deThi in Model)
+{
+    var dangLam = danhSachLichSu?.FirstOrDefault(l => l.DeThiId == deThi.Id);
+    <div class="card mb-3 shadow-sm border-0 position-relative">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h5 class="card-title fw-bold text-primary">
+                        <a asp-action="ChiTietDeThi" asp-route-id="@deThi.Id" class="text-decoration-none">
+                            @deThi.TenDeThi
+                        </a>
+                    </h5>
+
+                    <div class="text-muted small mt-2">
+                        <div class="mb-1">
+                            <i class="bi bi-clock me-1"></i> @deThi.ThoiGianLamBai phút
+                        </div>
+                        <div class="mb-1">
+                            <i class="bi bi-list-task me-1"></i> @deThi.SoLuongCauHoi câu hỏi
+                        </div>
+                        <div>
+                            <i class="bi bi-calendar-event me-1"></i> @deThi.NgayTao.ToString("yyyy-MM-dd")
                         </div>
                     </div>
-                    <div class="card-body">
-                        <p class="card-text text-secondary mb-3">
-                            @de.MoTa
-                        </p>
-                        <div class="row row-cols-2 g-2 text-secondary small mb-3">
-                            <div class="col d-flex align-items-center">
-                                <i class="bi bi-clock text-primary me-2"></i>
-                                <span>@de.ThoiGianPhut phút</span>
-                            </div>
-                            <div class="col d-flex align-items-center">
-                                <i class="bi bi-list-check text-primary me-2"></i>
-                                <span>@de.SoCauHoi câu hỏi</span>
-                            </div>
-                            <div class="col d-flex align-items-center">
-                                <i class="bi bi-bar-chart text-primary me-2"></i>
-                                <span>Độ khó: @de.DoKho</span>
-                            </div>
-                            <div class="col d-flex align-items-center">
-                                <i class="bi bi-calendar-date text-primary me-2"></i>
-                                <span>@de.NgayTao.ToString("yyyy-MM-dd")</span>
-                            </div>
+
+                    @if (dangLam != null)
+                    {
+                        <div class="mt-2">
+                            <span class="badge bg-warning text-dark">🕒 Đang làm dở</span>
+                            <a href="/Thi/LamBai?id=@deThi.Id" class="btn btn-outline-primary btn-sm ms-2">
+                                Tiếp tục làm bài
+                            </a>
                         </div>
-                    </div>
-                    <div class="card-footer bg-white border-top-0">
-                        <a href="@Url.Action("QuizDetail", "Home", new { id = de.Id })" class="btn btn-outline-primary w-100">Xem chi tiết</a>
-                    </div>
+                    }
+                </div>
+
+                <div>
+                    <span class="badge bg-light border text-primary fw-medium">
+                        @deThi.ChuDe?.TenChuDe
+                    </span>
                 </div>
             </div>
-        }
+        </div>
     </div>
-</section>
+}
 
-<!-- Pagination -->
-<nav aria-label="Page navigation" class="my-5">
-    <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+
+
+@*Phân Trang*@
+@if (ViewBag.TotalPages > 1)
+{
+    <nav class="d-flex justify-content-center mt-4">
+        <ul class="pagination">
+            <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1 })">&laquo;</a>
+            </li>
+
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1 })">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+}

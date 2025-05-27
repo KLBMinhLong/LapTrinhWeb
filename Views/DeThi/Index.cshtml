@@ -1,0 +1,122 @@
+@model IEnumerable<DeThi>
+
+@{
+    ViewData["Title"] = "Danh sách đề thi";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    // Tính số thứ tự bắt đầu dựa trên trang hiện tại
+    int startIndex = ((ViewBag.CurrentPage != null ? ViewBag.CurrentPage : 1) - 1) * 10 + 1;
+}
+
+@* Hiển thị thông báo lỗi nếu có *@
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@* Hiển thị thông báo thành công nếu có *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<h2 class="mb-4 fw-bold text-center text-primary">Danh Sách Đề Thi</h2>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a asp-action="Create" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Tạo đề thi mới
+    </a>
+
+    @* tìm kiếm theo tên đề thi *@
+    <form asp-action="Index" method="get" class="d-flex" style="max-width: 500px;">
+        <input type="text" name="searchString" class="form-control me-2" placeholder="Tìm đề thi..."
+            value="@ViewBag.CurrentFilter" />
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i> Tìm
+        </button>
+    </form>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+            <tr class="text-center">
+                <th style="width: 60px;">STT</th>
+                <th>Tên đề thi</th>
+                <th>Chủ đề</th>
+                <th>Thời gian</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+                <th>Số câu hỏi</th>
+                <th style="width: 200px;" colspan="3">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model)
+            {
+                <tr>
+                    <td class="text-center">@(startIndex++)</td>
+                    <td>@d.TenDeThi</td>
+                    <td>@d.ChuDe?.TenChuDe</td>
+                    <td class="text-center">@d.ThoiGianLamBai phút</td>
+                    <td class="text-center">
+                        <span class="badge @(d.TrangThaiMo ? "bg-success" : "bg-danger")">
+                            @(d.TrangThaiMo ? "Mở" : "Đóng")
+                        </span>
+                    </td>
+                    <td class="text-center">@d.NgayTao.ToString("dd/MM/yyyy")</td>
+                    <td class="text-center">@d.SoLuongCauHoi</td>
+                    <td class="text-center">
+                        <a asp-action="Details" asp-route-id="@d.Id" class="btn btn-sm btn-info">
+                            <i class="bi bi-eye"></i> Xem
+                        </a>
+                    </td>
+                    <td class="text-center">
+                        <a asp-action="Edit" asp-route-id="@d.Id" class="btn btn-sm btn-warning">
+                            <i class="bi bi-pencil-square"></i> Sửa
+                        </a>
+                    </td>
+                    <td class="text-center">
+                        <form asp-action="Delete" asp-route-id="@d.Id" method="post" style="display:inline;"
+                            onsubmit="return confirm('Xoá đề thi này?');">
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i> Xoá
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@* Phân Trang *@
+@if (ViewBag.TotalPages > 1)
+{
+    <nav class="d-flex justify-content-center mt-4">
+        <ul class="pagination">
+            <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link"
+                    href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, searchString = ViewBag.CurrentFilter })">&laquo;</a>
+            </li>
+
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                        href="@Url.Action("Index", new { page = i, searchString = ViewBag.CurrentFilter })">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                <a class="page-link"
+                    href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, searchString = ViewBag.CurrentFilter })">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+}

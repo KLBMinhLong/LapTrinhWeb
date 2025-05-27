@@ -1,0 +1,108 @@
+@model List<ChiTietLamBai>
+@{
+    ViewBag.Title = "Làm bài thi";
+    var lichSuId = ViewBag.LichSuId;
+    var thoiGian = (int)ViewBag.ThoiGianConLai;
+    Layout = "_LayoutNoFooter";
+}
+
+<link rel="stylesheet" href="~/css/lambaithi.css" />
+
+<div class="exam-container">
+    <div id="exam-header" class="exam-header">
+        <h3 class="exam-title">
+            <i class="bi bi-file-earmark-text me-2"></i>
+            <span id="exam-name">Bài thi</span>
+        </h3>
+
+        <div class="timer-container">
+            <i class="bi bi-alarm-fill timer-icon"></i>
+            <span id="countdown" class="timer" data-time="@thoiGian">--:--</span>
+        </div>
+    </div>
+
+    <form id="formThi">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var cauHoi = Model[i].CauHoi; var dapAnChon = Model[i].DapAnChon; if
+                (cauHoi != null)
+            {
+                <div class="question-card">
+                    <div class="mb-3">
+                        <span class="question-number">@(i + 1)</span>
+                        <span class="question-text">@cauHoi.NoiDung</span>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(cauHoi.HinhAnhUrl))
+                    {
+                        <div class="question-media">
+                            <img src="@cauHoi.HinhAnhUrl" alt="Hình ảnh câu hỏi" class="img-fluid mb-2" style="max-width: 400px" />
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(cauHoi.AudioUrl))
+                    {
+                        <div class="question-media">
+                            <audio controls class="mb-2 w-100" style="max-width: 400px">
+                                <source src="@cauHoi.AudioUrl" type="audio/mpeg" />
+                                Trình duyệt không hỗ trợ audio.
+                            </audio>
+                        </div>
+                    }
+                    <input type="hidden" name="CauHoiId" value="@cauHoi.Id" />
+
+                    <div class="answer-options">
+                        @foreach (var dapAn in new[] { "A", "B", "C", "D" })
+                        {
+                            var noiDung = typeof(CauHoi).GetProperty("DapAn" + dapAn)?.GetValue(cauHoi)?.ToString();
+                            var isChecked = (dapAn == dapAnChon) ? "checked" : "";
+                            var isSelected = (dapAn == dapAnChon) ? "selected" : "";
+
+                            <div class="answer-option @isSelected">
+                                <input class="form-check-input" type="radio" id="dapAn_@cauHoi.Id@dapAn" name="dapAn_@cauHoi.Id"
+                                    value="@dapAn" @Html.Raw(isChecked)
+                                    onchange="luuDapAn(@lichSuId, @cauHoi.Id, '@dapAn'); markSelected(this);">
+                                <label class="answer-label" for="dapAn_@cauHoi.Id@dapAn">
+                                    <strong>@dapAn.</strong> @noiDung
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </form>
+
+    <div class="submit-container">
+        <form asp-action="NopBai" method="post">
+            <input type="hidden" name="lichSuId" value="@lichSuId" />
+            <button type="submit" class="btn-submit" id="submitButton">
+                <i class="bi bi-check-circle me-2"></i>Nộp bài
+            </button>
+        </form>
+    </div>
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h4><i class="bi bi-question-circle me-2"></i>Xác nhận nộp bài</h4>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn nộp bài thi?</p>
+                <p class="text-muted small">Sau khi nộp bài, bạn sẽ không thể quay lại để chỉnh sửa.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelSubmit" class="btn-cancel">
+                    <i class="bi bi-x-circle me-1"></i>Hủy
+                </button>
+                <button id="confirmSubmit" class="btn-confirm">
+                    <i class="bi bi-check-circle me-1"></i>Xác nhận nộp bài
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/lambai.js"></script>
+
+}

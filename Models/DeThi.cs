@@ -1,19 +1,26 @@
-using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LapTrinhWeb.Models
+public class DeThi
 {
-    public class DeThi
-    {
-        public int Id { get; set; }
-        public string TenDe { get; set; }
-        public string MoTa { get; set; }
-        public int ChuDeId { get; set; }
-        public ChuDe ChuDe { get; set; }
-        public int ThoiGianPhut { get; set; }
-        public int SoCauHoi { get; set; }
-        public string DoKho { get; set; }
-        public DateTime NgayTao { get; set; }
-        public List<CauHoi> CacCauHoi { get; set; }
-    }
+    public int Id { get; set; }
+
+    [Required(ErrorMessage = "Tên đề thi không được để trống")]
+    public string TenDeThi { get; set; } = "";
+
+    [Range(1, 300, ErrorMessage = "Thời gian làm bài phải từ 1 đến 300 phút")]
+    public int ThoiGianLamBai { get; set; }
+
+    public DateTime NgayTao { get; set; } = DateTime.Now;
+
+    public bool TrangThaiMo { get; set; } = true;
+
+    [Required]
+    public int ChuDeId { get; set; }
+
+    [ForeignKey("ChuDeId")]
+    public ChuDe? ChuDe { get; set; }
+
+    public int SoLuongCauHoi { get; set; } // Số lượng câu cần lấy khi làm bài
+
 }

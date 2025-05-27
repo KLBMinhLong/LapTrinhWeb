@@ -1,12 +1,11 @@
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LapTrinhWeb.Models.ViewModels
+namespace ThiTracNghiem.Models
 {
     public class LamBaiViewModel
     {
         public DeThi DeThi { get; set; }
-        public int ChiSoCauHoiHienTai { get; set; }
-        public List<TraLoiNguoiDung> CacTraLoiNguoiDung { get; set; }
-        public int ThoiGianConLaiGiay { get; set; }
+        public List<CauHoi> CauHois { get; set; }
     }
 }

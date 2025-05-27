@@ -1,69 +1,90 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using LapTrinhWeb.Models;
+using ThiTracNghiem.Data;
+using ThiTracNghiem.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace LapTrinhWeb.Controllers;
+namespace ThiTracNghiem.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly AppDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(AppDbContext context)
     {
-        _logger = logger;
+        _context = context;
     }
 
-    public IActionResult Index()
+    [RequireLogin]
+    public async Task<IActionResult> Index(string searchString, int? chuDeId, int page = 1, int pageSize = 6)
     {
-        // Mock data cho danh sách đề thi
-        var danhSachDeThi = new List<DeThi>
+        var username = HttpContext.Session.GetString("UserName");
+
+        var lichSuDangLam = _context.LichSuLamBais
+            .Where(l => l.TenTaiKhoan == username && l.TrangThai == "DangLam")
+            .ToList();
+
+        ViewBag.LichSuDangLam = lichSuDangLam;
+
+        var query = _context.DeThis
+            .Include(d => d.ChuDe)
+            .Where(d => d.TrangThaiMo) // chỉ lấy đề đang mở
+            .AsQueryable();
+
+        // Tìm kiếm
+        if (!string.IsNullOrEmpty(searchString))
         {
-            new DeThi
-            {
-                Id = 1,
-                TenDe = "Toán học cơ bản",
-                MoTa = "Bài kiểm tra kiến thức toán học cơ bản dành cho học sinh THPT",
-                ChuDe = new ChuDe { Id = 1, TenChuDe = "Toán học" },
-                ThoiGianPhut = 45,
-                SoCauHoi = 30,
-                DoKho = "Trung bình",
-                NgayTao = new DateTime(2023, 5, 15)
-            },
-            new DeThi
-            {
-                Id = 2,
-                TenDe = "Ngữ pháp tiếng Anh",
-                MoTa = "Kiểm tra ngữ pháp và từ vựng tiếng Anh cơ bản",
-                ChuDe = new ChuDe { Id = 2, TenChuDe = "Tiếng Anh" },
-                ThoiGianPhut = 30,
-                SoCauHoi = 25,
-                DoKho = "Dễ",
-                NgayTao = new DateTime(2023, 6, 20)
-            },
-            new DeThi
-            {
-                Id = 3,
-                TenDe = "Vật lý đại cương",
-                MoTa = "Bài kiểm tra kiến thức vật lý đại cương cho học sinh lớp 12",
-                ChuDe = new ChuDe { Id = 3, TenChuDe = "Vật lý" },
-                ThoiGianPhut = 60,
-                SoCauHoi = 40,
-                DoKho = "Khó",
-                NgayTao = new DateTime(2023, 7, 10)
-            },
-            new DeThi
-            {
-                Id = 4,
-                TenDe = "Hóa học hữu cơ",
-                MoTa = "Bài kiểm tra về hóa học hữu cơ và các phản ứng cơ bản",
-                ChuDe = new ChuDe { Id = 4, TenChuDe = "Hóa học" },
-                ThoiGianPhut = 50,
-                SoCauHoi = 35,
-                DoKho = "Trung bình",
-                NgayTao = new DateTime(2023, 8, 5)
-            }
-        };
+            query = query.Where(d => d.TenDeThi.Contains(searchString));
+        }
+
+        // Lọc theo chủ đề
+        if (chuDeId.HasValue)
+        {
+            query = query.Where(d => d.ChuDeId == chuDeId);
+        }
+
+        query = query.OrderByDescending(d => d.NgayTao);
+
+        int totalItems = await query.CountAsync();
+
+        var danhSachDeThi = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        // Truyền dữ liệu cần thiết cho view
+        ViewBag.CurrentPage = page;
+        ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+        ViewBag.CurrentFilter = searchString;
+        ViewBag.CurrentChuDeId = chuDeId;
+
+        ViewBag.ChuDes = await _context.ChuDes.ToListAsync();
+
         return View(danhSachDeThi);
+    }
+
+    public IActionResult GioiThieu()
+    {
+        return View();
+    }
+
+    public IActionResult ChiTietDeThi(int id)
+    {
+        var username = HttpContext.Session.GetString("UserName");
+
+        var lichSuDangLam = _context.LichSuLamBais
+            .Where(l => l.TenTaiKhoan == username && l.TrangThai == "DangLam")
+            .ToList();
+
+        ViewBag.LichSuDangLam = lichSuDangLam;
+
+        var deThi = _context.DeThis
+            .Include(d => d.ChuDe)
+            .FirstOrDefault(d => d.Id == id);
+
+        if (deThi == null) return NotFound();
+
+        return View(deThi);
     }
 
     public IActionResult Privacy()
@@ -71,60 +92,9 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult QuizDetail(int id = 1)
+    public IActionResult AccessDenied()
     {
-        // Lấy mock data từ danh sách đề thi (giống Index)
-        var danhSachDeThi = new List<DeThi>
-        {
-            new DeThi
-            {
-                Id = 1,
-                TenDe = "Toán học cơ bản",
-                MoTa = "Bài kiểm tra kiến thức toán học cơ bản dành cho học sinh THPT",
-                ChuDe = new ChuDe { Id = 1, TenChuDe = "Toán học" },
-                ThoiGianPhut = 45,
-                SoCauHoi = 30,
-                DoKho = "Trung bình",
-                NgayTao = new DateTime(2023, 5, 15),
-            },
-            new DeThi
-            {
-                Id = 2,
-                TenDe = "Ngữ pháp tiếng Anh",
-                MoTa = "Kiểm tra ngữ pháp và từ vựng tiếng Anh cơ bản",
-                ChuDe = new ChuDe { Id = 2, TenChuDe = "Tiếng Anh" },
-                ThoiGianPhut = 30,
-                SoCauHoi = 25,
-                DoKho = "Dễ",
-                NgayTao = new DateTime(2023, 6, 20),
-                
-            },
-            new DeThi
-            {
-                Id = 3,
-                TenDe = "Vật lý đại cương",
-                MoTa = "Bài kiểm tra kiến thức vật lý đại cương cho học sinh lớp 12",
-                ChuDe = new ChuDe { Id = 3, TenChuDe = "Vật lý" },
-                ThoiGianPhut = 60,
-                SoCauHoi = 40,
-                DoKho = "Khó",
-                NgayTao = new DateTime(2023, 7, 10),
-            },
-            new DeThi
-            {
-                Id = 4,
-                TenDe = "Hóa học hữu cơ",
-                MoTa = "Bài kiểm tra về hóa học hữu cơ và các phản ứng cơ bản",
-                ChuDe = new ChuDe { Id = 4, TenChuDe = "Hóa học" },
-                ThoiGianPhut = 50,
-                SoCauHoi = 35,
-                DoKho = "Trung bình",
-                NgayTao = new DateTime(2023, 8, 5),  
-            }
-        };
-        var deThi = danhSachDeThi.FirstOrDefault(d => d.Id == id);
-        var vm = new LapTrinhWeb.Models.ViewModels.ChiTietDeThiViewModel { DeThi = deThi };
-        return View(vm);
+        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

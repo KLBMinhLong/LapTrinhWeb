@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace LapTrinhWeb.Models
+public class ChuDe
 {
-    public class ChuDe
-    {
-        public int Id { get; set; }
-        public string TenChuDe { get; set; } // Ví dụ: Toán học, Tiếng Anh
-        public string MoTa { get; set; }
-        public List<DeThi> DeThis { get; set; }
-    }
+    public int Id { get; set; }
+
+    [Required(ErrorMessage = "Tên chủ đề không được để trống")]
+    public string TenChuDe { get; set; } = "";
+
+    public ICollection<CauHoi>? CacCauHoi { get; set; }
 }
