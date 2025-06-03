@@ -38,11 +38,9 @@
                             <li class="nav-item">
                                 <a class="nav-link fw-medium @(ViewContext.RouteData.Values["action"]?.ToString() == "Dashboard" ? "active text-primary" : "text-secondary")" asp-controller="Admin" asp-action="Dashboard">Trang chủ ADMIN</a>
                             </li>
-                            @*
                             <li class="nav-item">
                                 <a class="nav-link fw-medium @(ViewContext.RouteData.Values["action"]?.ToString() == "QuanLyNguoiDung" ? "active text-primary" : "text-secondary")" asp-controller="Admin" asp-action="QuanLyNguoiDung">Quản lý Người Dùng</a>
                             </li>
-                            *@
                             <li class="nav-item">
                                 <a class="nav-link fw-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "ChuDe" ? "active text-primary" : "text-secondary")" asp-controller="ChuDe" asp-action="Index">Quản lý Chủ Đề</a>
                             </li>
@@ -52,11 +50,9 @@
                             <li class="nav-item">
                                 <a class="nav-link fw-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "DeThi" ? "active text-primary" : "text-secondary")" asp-controller="DeThi" asp-action="Index">Quản lý Đề Thi</a>
                             </li>
-                            @*
                             <li class="nav-item">
                                 <a class="nav-link fw-medium @(ViewContext.RouteData.Values["controller"]?.ToString() == "LienHe" ? "active text-primary" : "text-secondary")" asp-controller="LienHe" asp-action="QuanLyLienHe">Quản lý Liên Hệ</a>
                             </li>
-                            *@
                             <li class="nav-item">
                                 <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Index">Trở Lại Trang Chủ</a>
                             </li>

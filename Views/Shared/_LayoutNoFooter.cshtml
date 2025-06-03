@@ -37,7 +37,6 @@
                             <a class="nav-link fw-medium @(currentController == "Home" && currentAction == "Index" ? "active text-primary" : "text-secondary")"
                                 asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a>
                         </li>
-                        @* 
                         <li class="nav-item">
                             <a class="nav-link fw-medium @(currentController == "Home" && currentAction == "GioiThieu" ? "active text-primary" : "text-secondary")"
                                 asp-area="" asp-controller="Home" asp-action="GioiThieu">Giới Thiệu</a>
@@ -45,8 +44,7 @@
                         <li class="nav-item">
                             <a class="nav-link fw-medium @(currentController == "Home" && currentAction == "Privacy" ? "active text-primary" : "text-secondary")"
                                 asp-area="" asp-controller="Home" asp-action="Privacy">Chính Sách</a>
-                        </li>
-                        *@                       
+                        </li>                  
                         @if (string.IsNullOrEmpty(tenDangNhap))
                         {
                             <li class="nav-item ms-2">
@@ -55,19 +53,16 @@
                                     <i class="bi bi-box-arrow-in-right me-1"></i>Đăng Nhập
                                 </a>
                             </li>
-                            @*
                             <li class="nav-item ms-2">
                                 <a class="btn @(currentController == "TaiKhoan" && currentAction == "DangKy" ? "btn-success" : "btn-outline-success") rounded-pill px-3"
                                     asp-controller="TaiKhoan" asp-action="DangKy">
                                     <i class="bi bi-person-plus me-1"></i>Đăng Ký
                                 </a>
                             </li>
-                            *@
                         }
 
                         else
                         {
-                            @*
                             <li class="nav-item">
                                 <a class="nav-link fw-medium @(currentController == "LichSuThi" ? "active text-primary" : "text-secondary")"
                                     asp-controller="LichSuThi" asp-action="Index">Lịch Sử Thi</a>
@@ -90,7 +85,6 @@
                                         asp-controller="Admin" asp-action="Dashboard">Quản Lý(ADMIN)</a>
                                 </li>
                             }
-                            *@
                             <li class="nav-item ms-2">
                                 <a class="btn btn-outline-danger rounded-pill px-3" asp-controller="TaiKhoan"
                                     asp-action="DangXuat">
