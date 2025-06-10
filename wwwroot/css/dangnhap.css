@@ -1,85 +1,61 @@
-/* Đặt phần đăng nhập vào giữa trang */
+
+
 .login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Chiều cao của cửa sổ trình duyệt */
-  background-color: #f4f9fb;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
 }
 
 .login-form {
   background-color: #ffffff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   width: 100%;
-  max-width: 400px; /* Đảm bảo form không quá rộng */
-  font-family: "Arial", sans-serif;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.login-form:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
 }
 
 .login-form h2 {
   text-align: center;
-  color: #007bff; /* Màu xanh chủ đạo */
+  color: #2563eb;
   font-size: 2rem;
-  margin-bottom: 20px;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.form-group {
+  margin-bottom: 1rem;
 }
 
 .login-form label {
   display: block;
   margin-bottom: 8px;
-  font-size: 1rem;
-  color: #333;
+  font-size: 0.95rem;
+  color: #4b5563;
+  font-weight: 500;
 }
 
-.login-form input {
+.form-input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 12px 15px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
   font-size: 1rem;
-  color: #333;
+  color: #1f2937;
+  transition: all 0.3s;
+  box-sizing: border-box;
 }
 
-.login-form input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(38, 140, 251, 0.25);
-}
-
-.login-form button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.login-form button:hover {
-  background-color: #348fff;
-}
-
-/* Thông báo lỗi */
-.login-form .error-message {
-  color: #dc3545;
-  text-align: center;
-  font-size: 0.9rem;
-  margin-bottom: 15px;
-  padding: 8px;
-  background-color: #f8d7da;
-  border-radius: 4px;
-  border: 1px solid #f5c6cb;
-}
-/* Thay đổi màu sắc của nút đăng nhập khi hover */
-.login-form button:hover {
-  background-color: #0056b3;
-}
-/* Thay đổi màu sắc của nút đăng nhập khi nhấn */
-.login-form button:active {
-  background-color: #004494;
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
 .password-wrapper {
@@ -88,118 +64,167 @@
 
 .password-wrapper input {
   width: 100%;
-  padding-right: 38px;
-  margin-bottom: 0;
+  padding-right: 45px;
 }
 
 .password-wrapper button {
   position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 38px;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  font-size: 1.1rem;
+  cursor: pointer;
+  height: 36px;
+  width: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  background: transparent;
-  color: #007bff;
-  cursor: pointer;
-  z-index: 2;
-  margin: 0;
   padding: 0;
-}
-
-.password-wrapper button:focus {
-  outline: none;
-  box-shadow: none;
+  border-radius: 50%;
+  transition: all 0.2s;
 }
 
 .password-wrapper button:hover {
-  background-color: rgba(194, 221, 251, 0.1) !important;
+  background-color: #f3f4f6;
+  color: #3b82f6;
 }
 
-.password-wrapper .bi {
-  font-size: 1.2rem;
+.forgot-password {
+  display: block;
+  text-align: right;
+  margin: 8px 0 20px;
 }
 
+.forgot-password a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
 
+.forgot-password a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
 
-.btn-signin{
-  background-color: #007bff;
-  margin-top: 20px;
+.btn-signin {
+  width: 100%;
+  padding: 12px;
+  background-color: #2563eb;
   color: white;
   border: none;
-  border-radius: 4px;
-  font-size: 1.1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .btn-signin:hover {
-  background-color: #63afff !important;
+  background-color: #1d4ed8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Styling for registration link section */
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  position: relative;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: calc(50% - 70px);
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+.divider span {
+  background: white;
+  padding: 0 10px;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.btn-google {
+  width: 100%;
+  padding: 12px;
+  background-color: white;
+  color: #333;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.btn-google:hover {
+  background-color: #f8f9fa;
+  border-color: #d1d5db;
+}
+
+.btn-google i {
+  color: #db4437;
+  font-size: 1.2rem;
+}
+
 .register-link {
   text-align: center;
-  margin-top: 20px;
-  font-size: 0.9rem;
-  color: #555;
+  margin-top: 15px;
 }
 
 .register-link a {
-  color: #007bff;
+  color: #2563eb;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   margin-left: 5px;
 }
 
 .register-link a:hover {
   text-decoration: underline;
-  color: #0056b3;
 }
 
-.btn-google {
-    width: 100%;
-    padding: 12px;
-    background-color: #db4437;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+.error-message {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
-.btn-google:hover {
-    background-color: #c23321;
-    color: white;
-    text-decoration: none;
-}
-
-.divider {
-    text-align: center;
-    margin: 20px 0;
-    position: relative;
-}
-
-.divider::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: #ddd;
-}
-
-.divider span {
-    background: white;
-    padding: 0 15px;
-    color: #666;
+@media (max-width: 480px) {
+  .login-form {
+    padding: 1.5rem;
+  }
+  
+  .login-form h2 {
+    font-size: 1.75rem;
+  }
+  
+  .divider::before, .divider::after {
+    width: calc(50% - 40px);
+  }
 }
