@@ -18,6 +18,8 @@
             {
                 <div class="error-message">@ViewBag.Loi</div>
             }
+            
+            <!-- Form đăng nhập thông thường -->
             <div>
                 <label>Tên tài khoản</label>
                 <input name="tenTaiKhoan" />
@@ -33,8 +35,21 @@
                 <div>
                     <a href="/TaiKhoan/QuenMatKhau">Quên mật khẩu?</a>
                 </div>
-            </div> 
+            </div>
+            
             <button class="btn btn-signin" type="submit">Đăng nhập</button>
+            
+            <!-- Nút đăng nhập Google -->
+            <div class="text-center mt-3">
+                <div class="divider">
+                    <span>hoặc</span>
+                </div>
+                <a href="@Url.Action("DangNhapGoogle", "TaiKhoan")" class="btn btn-google">
+                    <i class="bi bi-google"></i>
+                    Đăng nhập bằng Google
+                </a>
+            </div>
+            
             <div class="d-flex justify-content-between mt-2">
                 <div class="register-link">
                     <span>Chưa có tài khoản?</span>

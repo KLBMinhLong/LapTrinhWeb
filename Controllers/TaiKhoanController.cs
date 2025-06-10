@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using ThiTracNghiem.Helpers;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ThiTracNghiem.Controllers
 {
@@ -204,6 +206,86 @@ namespace ThiTracNghiem.Controllers
             return View(model);
         }
 
+        public IActionResult DangNhapGoogle()
+        {
+            var redirectUrl = Url.Action("GoogleCallback", "TaiKhoan");
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        // Callback sau khi đăng nhập Google thành công
+        public async Task<IActionResult> GoogleCallback()
+        {
+            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+            
+            if (!result.Succeeded)
+            {
+                ViewBag.Loi = "Đăng nhập Google thất bại.";
+                return RedirectToAction("DangNhap");
+            }
+
+            var claims = result.Principal.Identities.FirstOrDefault()?.Claims;
+            var email = claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var name = claims?.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            var googleId = claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                ViewBag.Loi = "Không thể lấy thông tin email từ Google.";
+                return RedirectToAction("DangNhap");
+            }
+
+            // Kiểm tra user đã tồn tại trong database chưa
+            var existingUser = await _context.TaiKhoans.FirstOrDefaultAsync(x => x.Email == email);
+            
+            if (existingUser == null)
+            {
+                // Tạo tài khoản mới cho user Google
+                var newUser = new TaiKhoan
+                {
+                    TenTaiKhoan = email, // Sử dụng email làm username
+                    Email = email,
+                    MatKhau = MaHoaHelper.MaHoaSHA256(email), // Sử dụng email làm password
+                    NgaySinh = DateTime.Now.AddYears(-18), // Mặc định
+                    GioiTinh = "Khác",
+                    SoDienThoai = "",
+                    VaiTro = "user",
+                    TrangThaiKhoa = false,
+                    ThoiGianTao = DateTime.Now,
+                    AnhDaiDienUrl = claims?.FirstOrDefault(x => x.Type == "picture")?.Value
+                };
+
+                _context.TaiKhoans.Add(newUser);
+                await _context.SaveChangesAsync();
+                existingUser = newUser;
+            }
+
+            // Đăng nhập user
+            var userClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, existingUser.TenTaiKhoan),
+                new Claim(ClaimTypes.Email, existingUser.Email),
+                new Claim(ClaimTypes.Role, existingUser.VaiTro)
+            };
+
+            var identity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+            // Lưu thông tin vào Session
+            HttpContext.Session.SetString("UserName", existingUser.TenTaiKhoan);
+            HttpContext.Session.SetString("VaiTro", existingUser.VaiTro);
+
+            // Điều hướng
+            if (existingUser.VaiTro.ToLower() == "admin")
+            {
+                return RedirectToAction("Dashboard", "Admin");
+            }
+            
+            return RedirectToAction("Index", "Home");
+        }
+
         // GET: /TaiKhoan/DangNhap
         public IActionResult DangNhap() => View();
 
@@ -232,17 +314,19 @@ namespace ThiTracNghiem.Controllers
                 return View();
             }
 
-            // Chỉ tạo claim và đăng nhập khi user hợp lệ
+            // Sử dụng cùng một scheme với Google authentication
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.TenTaiKhoan),
-                new Claim(ClaimTypes.Role, user.VaiTro) // ví dụ: "admin" hoặc "user"
+                new Claim(ClaimTypes.Email, user.Email ?? ""),
+                new Claim(ClaimTypes.Role, user.VaiTro)
             };
 
-            var identity = new ClaimsIdentity(claims, "MyCookieAuth");
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.SignInAsync("MyCookieAuth", principal);
+            // Sử dụng cùng scheme với cấu hình trong Program.cs
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
             // Lưu thông tin vào Session
             HttpContext.Session.SetString("UserName", user.TenTaiKhoan);
@@ -259,7 +343,8 @@ namespace ThiTracNghiem.Controllers
 
         public async Task<IActionResult> DangXuat()
         {
-            await HttpContext.SignOutAsync();
+            // Sử dụng cùng scheme để đăng xuất
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Clear();
             return RedirectToAction("DangNhap");
         }
@@ -376,4 +461,5 @@ namespace ThiTracNghiem.Controllers
             }
         }
     }
+    
 }
